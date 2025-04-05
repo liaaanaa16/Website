@@ -34,3 +34,6 @@ function submitAnswer() {
     resultElement.className = 'wrong';
   }
 }
+
+// Start with a question when the page loads
+generateQuestion();
