@@ -1,48 +1,57 @@
-// Questions and their correct answers
 const questions = [
-    { question: "What is the capital of France?", answer: "paris" },
-    { question: "What is 5 + 7?", answer: "12" },
-    { question: "Who wrote 'Romeo and Juliet'?", answer: "shakespeare" },
-    { question: "What is the largest planet in our solar system?", answer: "jupiter" },
-    { question: "What is the square root of 64?", answer: "8" }
+    {
+        question: "What is the capital of France?",
+        answer: "paris"
+    },
+    {
+        question: "Who wrote 'Harry Potter'?",
+        answer: "j.k. rowling"
+    },
+    {
+        question: "What is the largest ocean on Earth?",
+        answer: "pacific"
+    },
+    {
+        question: "In what year did the Titanic sink?",
+        answer: "1912"
+    },
+    {
+        question: "Who painted the Mona Lisa?",
+        answer: "leonardo da vinci"
+    }
 ];
 
-let currentQuestion = {};
+let currentQuestionIndex = 0;
 
-// Function to pick a random question
-function getRandomQuestion() {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    currentQuestion = questions[randomIndex];
-    document.getElementById('question').textContent = currentQuestion.question;
+function loadQuestion() {
+    const questionContainer = document.getElementById('question');
+    questionContainer.textContent = questions[currentQuestionIndex].question;
 }
 
-// Function to check the user's answer
 function checkAnswer() {
-    const userAnswer = document.getElementById('answer-input').value.toLowerCase().trim();
-    const feedback = document.getElementById('feedback');
+    const userAnswer = document.getElementById('answer').value.toLowerCase().trim();
+    const correctAnswer = questions[currentQuestionIndex].answer;
+
+    const response = document.getElementById('response');
     
-    if (userAnswer === currentQuestion.answer.toLowerCase()) {
-        feedback.textContent = "Correct!";
-        feedback.style.color = "green";
+    if (userAnswer === correctAnswer) {
+        response.textContent = "Correct! Moving to the next question.";
+        response.style.color = "#2ecc71";
+        currentQuestionIndex++;
+        
+        if (currentQuestionIndex < questions.length) {
+            setTimeout(() => {
+                loadQuestion();
+                response.textContent = "";
+                document.getElementById('answer').value = "";
+            }, 2000);
+        } else {
+            response.textContent = "You've completed all the questions!";
+            response.style.color = "#2980b9";
+        }
     } else {
-        feedback.textContent = "Incorrect! Try again.";
-        feedback.style.color = "red";
+        response.textContent = "Wrong answer, try again!";
     }
-    
-    // Clear the input field
-    document.getElementById('answer-input').value = "";
 }
 
-// Event listeners for button and Enter key
-document.getElementById('submit-btn').addEventListener('click', checkAnswer);
-document.getElementById('answer-input').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        checkAnswer();
-    }
-});
-
-// Initialize by loading a random question
-getRandomQuestion();
-
-// Button to get a new question
-document.getElementById('submit-btn').addEventListener('click', getRandomQuestion);
+window.onload = loadQuestion;
