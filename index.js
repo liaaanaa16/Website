@@ -1,39 +1,35 @@
-let currentQuestion = '';
-let correctAnswer = '';
+const questions = [
+  { q: "What is the capital of France?", a: "Paris" },
+  { q: "What color is the sky on a clear day?", a: "blue" },
+  { q: "What is the opposite of 'cold'?", a: "hot" },
+  { q: "What planet do we live on?", a: "Earth" },
+  { q: "What do bees make?", a: "honey" },
+  { q: "What animal barks?", a: "dog" },
+  { q: "What do you use to write?", a: "pen" },
+  { q: "Where do fish live?", a: "water" },
+  { q: "What fruit is yellow and long?", a: "banana" },
+  { q: "What do you call a baby cat?", a: "kitten" }
+];
+
+let currentAnswer = "";
 
 function generateQuestion() {
-  const questions = [
-    { question: "What is 2 + 2?", answer: "4" },
-    { question: "What is the capital of France?", answer: "Paris" },
-    { question: "Who wrote 'Romeo and Juliet'?", answer: "Shakespeare" },
-    { question: "What is the largest planet in our solar system?", answer: "Jupiter" },
-    { question: "What is the color of the sky?", answer: "blue" }
-  ];
-
-  // Select a random question from the array
-  const randomIndex = Math.floor(Math.random() * questions.length);
-  currentQuestion = questions[randomIndex].question;
-  correctAnswer = questions[randomIndex].answer;
-
-  // Update the question on the page
-  document.getElementById('question').textContent = currentQuestion;
-  document.getElementById('result').textContent = '';
-  document.getElementById('answerInput').value = '';
+  const random = questions[Math.floor(Math.random() * questions.length)];
+  document.getElementById("question").textContent = random.q;
+  currentAnswer = random.a.toLowerCase();
+  document.getElementById("answerInput").value = "";
+  document.getElementById("result").textContent = "";
 }
 
 function submitAnswer() {
-  const userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+  const userAnswer = document.getElementById("answerInput").value.trim().toLowerCase();
+  const result = document.getElementById("result");
 
-  // Check if the answer is correct
-  const resultElement = document.getElementById('result');
-  if (userAnswer === correctAnswer.toLowerCase()) {
-    resultElement.textContent = "Correct!";
-    resultElement.className = 'correct';
+  if (userAnswer === currentAnswer) {
+    result.textContent = "Correct!";
+    result.className = "correct";
   } else {
-    resultElement.textContent = "Wrong answer. Try again!";
-    resultElement.className = 'wrong';
+    result.textContent = `Wrong! The correct answer is: ${currentAnswer}`;
+    result.className = "wrong";
   }
 }
-
-// Start with a question when the page loads
-generateQuestion();
